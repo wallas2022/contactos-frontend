@@ -119,7 +119,7 @@ export default function ContactList({ onSelect }: Props) {
           <tr>
             <th className="p-2 text-left">Nombre</th>
             <th className="p-2 text-left">Email</th>
-            <th className="p-2 text-left">Etiquetas</th>
+            <th className="p-2 text-left">Categorias</th>
             <th className="p-2 text-left">Acciones</th>
           </tr>
         </thead>
@@ -149,7 +149,7 @@ export default function ContactList({ onSelect }: Props) {
               </td>
               <td className="p-2">
                 <button
-                  className="text-blue-600 underline"
+                  className="text-black-600 px-3 py-2 bg-gray-200 rounded hover:bg-green-100"
                   onClick={() => onSelect(c)}
                 >
                   Ver detalle
