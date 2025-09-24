@@ -1,0 +1,90 @@
+{
+  "contactos": [
+    {
+      "id": "1",
+      "nombres": "Ana",
+      "apellidos": "Pérez",
+      "email": "ana@ejemplo.com",
+      "telefono": "502-555-001",
+      "ciudad": "Guatemala",
+      "pais": "Guatemala",
+      "notas": "Cliente VIP",
+      "etiquetas": [
+        "VIP",
+        "Guatemala"
+      ]
+    },
+    {
+      "id": "2",
+      "nombres": "Luis",
+      "apellidos": "Gómez",
+      "telefono": "502-555-002",
+      "ciudad": "Antigua",
+      "pais": "Guatemala",
+      "etiquetas": [
+        "Prospecto"
+      ]
+    },
+    {
+      "id": "d00d",
+      "nombres": "Walter Rene ",
+      "apellidos": "Rosales ",
+      "email": "walter.roasales@gmail.com",
+      "telefono": "343433343",
+      "etiquetas": [
+        "Proveedor"
+      ]
+    },
+    {
+      "id": "b6d6",
+      "nombres": "Nancy Melissa ",
+      "apellidos": "Alvarez",
+      "email": "ameli@gmail.com",
+      "telefono": "3434343",
+      "etiquetas": [
+        "Proveedor"
+      ]
+    }
+  ],
+  "interacciones": [
+    {
+      "id": "075f",
+      "contactoId": "d00d",
+      "tipo": "MEETING",
+      "canal": "Zoom",
+      "notas": "prueba de contacto",
+      "ocurridaEn": "2025-09-24T05:14:10.234Z"
+    },
+    {
+      "id": "0584",
+      "contactoId": "b6d6",
+      "tipo": "CORREO",
+      "canal": "Gmail",
+      "notas": "se mando anuncio",
+      "ocurridaEn": "2025-09-24T05:35:03.535Z"
+    }
+  ],
+  "etiquetas": [
+    {
+      "id": "1",
+      "nombre": "VIP",
+      "colorHex": "#FFD700"
+    },
+    {
+      "id": "2",
+      "nombre": "Prospecto",
+      "colorHex": "#87CEEB"
+    }
+  ],
+  "preferencias": [],
+  "perfiles": [],
+  "actividades": [
+    {
+      "id": "36fa",
+      "contactoId": "b6d6",
+      "tipo": "NEW_INTERACTION",
+      "detalle": "Se registró una CORREO por Gmail",
+      "ocurridaEn": "2025-09-24T05:35:03.579Z"
+    }
+  ]
+}
