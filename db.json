@@ -1,7 +1,7 @@
 {
   "contactos": [
     {
-      "id": "1",
+      "id": 1,
       "nombres": "Ana",
       "apellidos": "Pérez",
       "email": "ana@ejemplo.com",
@@ -10,23 +10,22 @@
       "pais": "Guatemala",
       "notas": "Cliente VIP",
       "etiquetas": [
-        "VIP",
-        "Guatemala"
+        1
       ]
     },
     {
-      "id": "2",
+      "id": 2,
       "nombres": "Luis",
       "apellidos": "Gómez",
       "telefono": "502-555-002",
       "ciudad": "Antigua",
       "pais": "Guatemala",
       "etiquetas": [
-        "Prospecto"
+        1
       ]
     },
     {
-      "id": "d00d",
+      "id": 3,
       "nombres": "Walter Rene ",
       "apellidos": "Rosales ",
       "email": "walter.roasales@gmail.com",
@@ -36,14 +35,71 @@
       ]
     },
     {
-      "id": "b6d6",
+      "id": 4,
       "nombres": "Nancy Melissa ",
       "apellidos": "Alvarez",
       "email": "ameli@gmail.com",
       "telefono": "3434343",
       "etiquetas": [
-        "Proveedor"
+        2
       ]
+    },
+    {
+      "id": 5,
+      "nombres": "Nuevo",
+      "apellidos": "Contacto",
+      "email": "nuevo@demo.com",
+      "etiquetas": [
+        2
+      ]
+    },
+    {
+      "id": 6,
+      "nombres": "Nuevo",
+      "apellidos": "Contacto",
+      "email": "nuevo@demo.com"
+    },
+    {
+      "id": 7,
+      "nombres": "Fabricio",
+      "apellidos": "Sagas",
+      "email": "fsagas@gmail.com"
+    },
+    {
+      "id": 8,
+      "nombres": "sdf",
+      "apellidos": "sdfs",
+      "email": "sdfs@gmail.com"
+    },
+    {
+      "id": 9,
+      "nombres": "Walter Rosales",
+      "apellidos": "sdls",
+      "email": "sldfs@gmail.com"
+    },
+    {
+      "id": 10,
+      "nombres": "Mynor",
+      "apellidos": "Saga",
+      "email": "msga@gmail.com"
+    },
+    {
+      "id": 11,
+      "nombres": "Prueba",
+      "apellidos": "ds",
+      "email": "sdfs@gmail.com"
+    },
+    {
+      "id": 12,
+      "nombres": "asdfa",
+      "apellidos": "dsafas",
+      "email": "asdfs@dsfasdfads.com"
+    },
+    {
+      "id": 13,
+      "nombres": "rdgfd",
+      "apellidos": "dfgd",
+      "email": "dfgddfsal@dfsas.com"
     }
   ],
   "interacciones": [
@@ -62,17 +118,46 @@
       "canal": "Gmail",
       "notas": "se mando anuncio",
       "ocurridaEn": "2025-09-24T05:35:03.535Z"
+    },
+    {
+      "id": "577e",
+      "contactoId": "6b2c",
+      "tipo": "MEETING",
+      "canal": "Meetin",
+      "notas": "prueba",
+      "ocurridaEn": "2025-09-24T20:43:49.417Z"
+    },
+    {
+      "id": "6173",
+      "contactoId": "b6d6",
+      "tipo": "CORREO",
+      "canal": "sdfs",
+      "notas": "sdfasdfas",
+      "fecha": "2025-09-24"
+    },
+    {
+      "id": "562b",
+      "contactoId": "b6d6",
+      "tipo": "CORREO",
+      "canal": "Telefono",
+      "notas": "prueba",
+      "fecha": "2025-09-24"
     }
   ],
   "etiquetas": [
     {
       "id": "1",
-      "nombre": "VIP",
+      "nombre": "Proveedor",
       "colorHex": "#FFD700"
     },
     {
       "id": "2",
       "nombre": "Prospecto",
+      "colorHex": "#87CEEB"
+    },
+    {
+      "id": "2",
+      "nombre": "Cliente",
       "colorHex": "#87CEEB"
     }
   ],
@@ -85,6 +170,97 @@
       "tipo": "NEW_INTERACTION",
       "detalle": "Se registró una CORREO por Gmail",
       "ocurridaEn": "2025-09-24T05:35:03.579Z"
+    },
+    {
+      "id": "81b8",
+      "contactoId": "6b2c",
+      "tipo": "NEW_INTERACTION",
+      "detalle": "Se registró una MEETING por Meetin",
+      "ocurridaEn": "2025-09-24T20:43:49.444Z"
+    }
+  ],
+  "etiqueta": [
+    {
+      "id": "1",
+      "nombre": "Prospecto",
+      "color": "#FFD700"
+    },
+    {
+      "id": "2",
+      "nombre": "Prospecto",
+      "color": "#00BFFF"
+    },
+    {
+      "id": "3",
+      "nombre": "Cliente",
+      "color": "#32CD32"
+    },
+    {
+      "id": "4",
+      "nombre": "Contacto",
+      "color": "#32CD32"
+    }
+  ],
+  "contactoEtiquetas": [
+    {
+      "id": "1",
+      "contactoId": 1,
+      "etiquetaId": 1
+    },
+    {
+      "id": "2",
+      "contactoId": 1,
+      "etiquetaId": 3
+    },
+    {
+      "id": "3",
+      "contactoId": 2,
+      "etiquetaId": 2
+    },
+    {
+      "id": "61c2",
+      "contactoId": "2124",
+      "etiquetaId": "2"
+    },
+    {
+      "id": "75eb",
+      "contactoId": "3c2d",
+      "etiquetaId": "2"
+    },
+    {
+      "id": "b982",
+      "contactoId": "6b05",
+      "etiquetaId": "2"
+    },
+    {
+      "id": "f0de",
+      "contactoId": "94f8",
+      "etiquetaId": "1"
+    },
+    {
+      "id": "7ed6",
+      "contactoId": "b6d6",
+      "etiquetaId": "1"
+    },
+    {
+      "id": "ebf8",
+      "contactoId": "d00d",
+      "etiquetaId": "2"
+    },
+    {
+      "id": "04df",
+      "contactoId": "2e35",
+      "etiquetaId": "1"
+    },
+    {
+      "id": "2f46",
+      "contactoId": "1fed",
+      "etiquetaId": "2"
+    },
+    {
+      "id": "efbc",
+      "contactoId": "a01a",
+      "etiquetaId": "1"
     }
   ]
 }

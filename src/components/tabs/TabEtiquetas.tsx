@@ -1,80 +1,64 @@
 import { useEffect, useState } from "react";
-import { api, type Contact } from "../../api/api";
+import type { Contact } from "../../api/api";
 
+type Etiqueta = { id: number; nombre: string; color: string };
 
-interface Props {
-  contact: Contact; // pasamos el contacto completo
-}
+type Props = { contact: Contact };
 
 export default function TabEtiquetas({ contact }: Props) {
-  const [etiquetas, setEtiquetas] = useState<string[]>(contact.etiquetas || []);
-  const [nueva, setNueva] = useState("");
+  const [allTags, setAllTags] = useState<Etiqueta[]>([]);
+  const [tags, setTags] = useState<Etiqueta[]>([]);
 
-  // recargar si cambia el contacto
-  useEffect(() => {
-    setEtiquetas(contact.etiquetas || []);
-  }, [contact]);
-
-  const handleAdd = async () => {
-    if (!nueva.trim()) return;
-
-    try {
-      const updated = await api.updateContact(contact.id!, {
-        etiquetas: [...etiquetas, nueva.trim()],
-      });
-      setEtiquetas(updated.etiquetas || []);
-      setNueva("");
-    } catch (err) {
-      console.error("Error agregando etiqueta:", err);
-    }
+  const load = async () => {
+    const all = await fetch("http://localhost:4000/etiquetas").then((r) => r.json());
+    const ce  = await fetch(`http://localhost:4000/contactoEtiquetas?contactoId=${contact.id}`).then((r) => r.json());
+    const current = all.filter((t: Etiqueta) => ce.some((x: any) => x.etiquetaId === t.id));
+    setAllTags(all);
+    setTags(current);
   };
 
-  const handleRemove = async (tag: string) => {
-    try {
-      const updated = await api.updateContact(contact.id!, {
-        etiquetas: etiquetas.filter((e) => e !== tag),
+  useEffect(() => { load(); }, [contact.id]);
+
+  const toggle = async (tagId: number) => {
+    const exists = tags.some((t) => t.id === tagId);
+    if (exists) {
+      const ce = await fetch(
+        `http://localhost:4000/contactoEtiquetas?contactoId=${contact.id}&etiquetaId=${tagId}`
+      ).then((r) => r.json());
+      if (ce[0]) {
+        await fetch(`http://localhost:4000/contactoEtiquetas/${ce[0].id}`, { method: "DELETE" });
+      }
+      setTags((prev) => prev.filter((t) => t.id !== tagId));
+    } else {
+      await fetch("http://localhost:4000/contactoEtiquetas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contactoId: contact.id, etiquetaId: tagId })
       });
-      setEtiquetas(updated.etiquetas || []);
-    } catch (err) {
-      console.error("Error eliminando etiqueta:", err);
+      const add = allTags.find((t) => t.id === tagId);
+      if (add) setTags((prev) => [...prev, add]);
     }
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-semibold mb-4">Etiquetas</h2>
-
-      <div className="flex gap-2 mb-4">
-        <input
-          value={nueva}
-          onChange={(e) => setNueva(e.target.value)}
-          placeholder="Nueva etiqueta"
-          className="border p-2 rounded flex-1"
-        />
-        <button
-          onClick={handleAdd}
-          className="px-3 py-2 bg-blue-600 text-white rounded"
-        >
-          + Agregar
-        </button>
-      </div>
-
+    <div>
+      <h3 className="font-semibold mb-2">Etiquetas</h3>
       <div className="flex flex-wrap gap-2">
-        {etiquetas.map((tag) => (
-          <span
-            key={tag}
-            className="px-3 py-1 bg-gray-200 rounded-full flex items-center gap-2"
-          >
-            {tag}
+        {allTags.map((tag) => {
+          const active = tags.some((t) => t.id === tag.id);
+          return (
             <button
-              onClick={() => handleRemove(tag)}
-              className="text-red-500 hover:text-red-700"
-              title="Eliminar"
+              key={tag.id}
+              onClick={() => toggle(tag.id)}
+              className={`px-3 py-1 rounded transition-colors ${
+                active ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300"
+              }`}
+              title={active ? "Quitar" : "Agregar"}
             >
-              ✕
+              {tag.nombre}
             </button>
-          </span>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
