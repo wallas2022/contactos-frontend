@@ -17,7 +17,7 @@ export default function ContactList({ onSelect }: Props) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
-  const [filterTag, setFilterTag] = useState("");
+  const [filterTag, _setFilterTag] = useState("");
   const [showForm, setShowForm] = useState(false);
   const limit = 5;
 
