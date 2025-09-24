@@ -3,18 +3,20 @@ const baseURL = "http://localhost:4000"; // JSON Server
 // const baseURL = "http://localhost:3000/api/v1"; // NestJS real
 
 // ---- Tipos ----
-export interface Contact {
+export type Etiqueta = {
+  id: number;
+  nombre: string;
+  color: string;
+};
+
+export type Contact = {
   id: number;
   nombres: string;
   apellidos: string;
   email?: string;
-  telefono?: string;
-  ciudad?: string;
-  pais?: string;
-  notas?: string;
-  etiquetas?: string[];
-}
-
+  phone?: string;          // 👈 añadido
+  etiquetas?: Etiqueta[];  // 👈 etiquetas como objetos completos
+};
 // ---- Interacciones ----
 export interface Interaccion {
   id?: number;

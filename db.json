@@ -154,23 +154,31 @@
       "canal": "Telefono",
       "notas": "prueba",
       "fecha": "2025-09-24"
+    },
+    {
+      "id": "94a4",
+      "contactoId": "a01d",
+      "tipo": "OTHER",
+      "canal": "hablando",
+      "notas": "se hablo",
+      "fecha": "2025-09-24"
     }
   ],
   "etiquetas": [
     {
       "id": 1,
       "nombre": "Proveedor",
-      "colorHex": "#FFD700"
+      "colorHex": "#4E68D0"
     },
     {
       "id": 2,
       "nombre": "Prospecto",
-      "colorHex": "#87CEEB"
+      "colorHex": "#B9CB52"
     },
     {
       "id": 2,
       "nombre": "Cliente",
-      "colorHex": "#87CEEB"
+      "colorHex": "#7CCB52"
     }
   ],
   "preferencias": [],
@@ -283,6 +291,11 @@
       "id": "9c8a",
       "contactoId": "a01d",
       "etiquetaId": "1"
+    },
+    {
+      "id": "51e4",
+      "contactoId": "a01d",
+      "etiquetaId": 1
     }
   ]
 }
