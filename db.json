@@ -112,6 +112,12 @@
       "nombres": "xzc<z",
       "apellidos": "xzxczz",
       "email": "afds@asdfas.com"
+    },
+    {
+      "id": "cd9e",
+      "nombres": "Fabian",
+      "apellidos": "Rosales",
+      "email": "frossales@gmail.com"
     }
   ],
   "interacciones": [
@@ -295,6 +301,26 @@
     {
       "id": "51e4",
       "contactoId": "a01d",
+      "etiquetaId": 1
+    },
+    {
+      "id": "3ff0",
+      "contactoId": "cd9e",
+      "etiquetaId": 2
+    },
+    {
+      "id": "a47a",
+      "contactoId": 6,
+      "etiquetaId": 1
+    },
+    {
+      "id": "570c",
+      "contactoId": "f7dc",
+      "etiquetaId": 2
+    },
+    {
+      "id": "87c4",
+      "contactoId": 10,
       "etiquetaId": 1
     }
   ]

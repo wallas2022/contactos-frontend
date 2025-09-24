@@ -27,7 +27,7 @@ export default function ContactList({ onSelect }: Props) {
   const [filterTag, setFilterTag] = useState("");
   const [allTags, setAllTags] = useState<Etiqueta[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const limit = 15;
+  const limit = 100;
 
   const loadContacts = async () => {
     let url = `http://localhost:4000/contactos?_page=${page}&_limit=${limit}`;
@@ -136,7 +136,7 @@ export default function ContactList({ onSelect }: Props) {
                     c.etiquetas.map((tag) => (
                       <span
                         key={tag.id}
-                        className="px-2 py-1 text-xs rounded text-white"
+                        className="px-2 py-1 text-xs rounded text-black"
                         style={{ backgroundColor: tag.color }}
                       >
                         {tag.nombre}
