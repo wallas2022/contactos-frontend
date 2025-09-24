@@ -1,71 +1,49 @@
-import { useState, useEffect } from "react";
-import { api } from "./api/api";
-import type { Contact } from "./api/api";
-import ContactList from "./components/ContactList";
-import ContactForm from "./components/ContactForm";
+import { useState } from "react";
 import ContactDetail from "./components/ContactDetail";
 
-type View = "list" | "form" | "detail";
+type Contact = {
+  id: number;
+  nombres: string;
+  apellidos: string;
+  email?: string;
+};
 
 export default function App() {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [view, setView] = useState<View>("list");
+  // Estado de contactos
+  const [contacts] = useState<Contact[]>([
+    { id: 1, nombres: "Ana", apellidos: "Pérez", email: "ana@ejemplo.com" },
+    { id: 2, nombres: "Luis", apellidos: "Gómez", email: "luis@ejemplo.com" },
+  ]);
+
+  // Estado de contacto seleccionado
   const [selected, setSelected] = useState<Contact | null>(null);
 
-  // 🔄 Cargar contactos al iniciar
-  useEffect(() => {
-    loadContacts();
-  }, []);
-
-  const loadContacts = async () => {
-    try {
-      const data = await api.getContacts();
-      setContacts(data);
-    } catch (err) {
-      console.error("Error cargando contactos", err);
-    }
-  };
-
-  const handleSaved = (contact: Contact) => {
-    setContacts([...contacts, contact]); // actualiza lista local
-    setView("list");
-  };
-
-  const handleSelect = (contact: Contact) => {
-    setSelected(contact);
-    setView("detail");
-  };
+  if (selected) {
+    return (
+      <ContactDetail
+        contact={selected}
+        onBack={() => setSelected(null)}
+      />
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-2xl font-bold mb-4">Gestión de Contactos</h1>
-
-      {view === "list" && (
-        <>
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded mb-4"
-            onClick={() => setView("form")}
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Listado de Contactos</h1>
+      <div className="bg-white shadow rounded divide-y">
+        {contacts.map((c) => (
+          <div
+            key={c.id}
+            className="p-4 hover:bg-gray-50 cursor-pointer"
+            onClick={() => setSelected(c)}
           >
-            + Nuevo Contacto
-          </button>
-
-          <ContactList contacts={contacts} onSelect={handleSelect} />
-        </>
-      )}
-
-      {view === "form" && (
-        <ContactForm
-          onSaved={handleSaved}
-          onCancel={() => setView("list")}
-        />
-      )}
-
-      {view === "detail" && selected && (
-        <ContactDetail
-          contact={selected}
-          onBack={() => setView("list")}
-        />
-      )}
+            <p className="font-semibold">
+              {c.nombres} {c.apellidos}
+            </p>
+            <p className="text-gray-600 text-sm">{c.email}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
