@@ -100,6 +100,18 @@
       "nombres": "rdgfd",
       "apellidos": "dfgd",
       "email": "dfgddfsal@dfsas.com"
+    },
+    {
+      "id": "f7dc",
+      "nombres": "zxcz",
+      "apellidos": "zxcz",
+      "email": "asdfas@gmai.com"
+    },
+    {
+      "id": "a01d",
+      "nombres": "xzc<z",
+      "apellidos": "xzxczz",
+      "email": "afds@asdfas.com"
     }
   ],
   "interacciones": [
@@ -146,17 +158,17 @@
   ],
   "etiquetas": [
     {
-      "id": "1",
+      "id": 1,
       "nombre": "Proveedor",
       "colorHex": "#FFD700"
     },
     {
-      "id": "2",
+      "id": 2,
       "nombre": "Prospecto",
       "colorHex": "#87CEEB"
     },
     {
-      "id": "2",
+      "id": 2,
       "nombre": "Cliente",
       "colorHex": "#87CEEB"
     }
@@ -260,6 +272,16 @@
     {
       "id": "efbc",
       "contactoId": "a01a",
+      "etiquetaId": "1"
+    },
+    {
+      "id": "3f51",
+      "contactoId": "f7dc",
+      "etiquetaId": "1"
+    },
+    {
+      "id": "9c8a",
+      "contactoId": "a01d",
       "etiquetaId": "1"
     }
   ]

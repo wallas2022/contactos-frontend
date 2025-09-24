@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import ContactForm from "./ContactForm";
 
+type Etiqueta = {
+  id: number;
+  nombre: string;
+  color: string;
+};
+
 type Contact = {
   id: number;
   nombres: string;
   apellidos: string;
   email?: string;
+  etiquetas?: Etiqueta[]; // 👈 ahora cada contacto puede traer sus etiquetas
 };
 
 interface Props {
@@ -17,31 +24,48 @@ export default function ContactList({ onSelect }: Props) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
-  const [filterTag, _setFilterTag] = useState("");
+  const [filterTag, setFilterTag] = useState("");
+  const [allTags, setAllTags] = useState<Etiqueta[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const limit = 5;
+  const limit = 15;
 
-  const loadContacts = () => {
+  const loadContacts = async () => {
     let url = `http://localhost:4000/contactos?_page=${page}&_limit=${limit}`;
     if (search) url += `&q=${encodeURIComponent(search)}`;
 
-    fetch(url)
-      .then((res) => {
-        const total = res.headers.get("X-Total-Count");
-        if (total) setTotalPages(Math.ceil(parseInt(total) / limit));
-        return res.json();
-      })
-      .then(async (data) => {
-        // si hay filtro por etiqueta
-        if (filterTag) {
-          const ce = await fetch(
-            `http://localhost:4000/contactoEtiquetas?etiquetaId=${filterTag}`
-          ).then((r) => r.json());
-          const ids = ce.map((x: any) => x.contactoId);
-          data = data.filter((c: Contact) => ids.includes(c.id));
-        }
-        setContacts(data);
-      });
+    const res = await fetch(url);
+    const total = res.headers.get("X-Total-Count");
+    if (total) setTotalPages(Math.ceil(parseInt(total) / limit));
+    let data: Contact[] = await res.json();
+
+    // Traer todas las etiquetas
+    const etiquetas: Etiqueta[] = await fetch(
+      "http://localhost:4000/etiquetas"
+    ).then((r) => r.json());
+    setAllTags(etiquetas);
+
+    // Traer relaciones contacto-etiqueta
+    const relaciones = await fetch(
+      "http://localhost:4000/contactoEtiquetas"
+    ).then((r) => r.json());
+
+    // Enriquecer cada contacto con sus etiquetas
+    data = data.map((c) => {
+      const rels = relaciones.filter((r: any) => r.contactoId === c.id);
+      const tags = etiquetas.filter((t) =>
+        rels.some((r: any) => r.etiquetaId === t.id)
+      );
+      return { ...c, etiquetas: tags };
+    });
+
+    // Filtrar por etiqueta si corresponde
+    if (filterTag) {
+      data = data.filter((c) =>
+        c.etiquetas?.some((tag) => tag.nombre === filterTag)
+      );
+    }
+
+    setContacts(data);
   };
 
   useEffect(() => {
@@ -60,17 +84,34 @@ export default function ContactList({ onSelect }: Props) {
         </button>
       </div>
 
-      {/* Buscador */}
-      <input
-        type="text"
-        placeholder="Buscar..."
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setPage(1);
-        }}
-        className="border rounded px-3 py-2 mb-4 w-1/2"
-      />
+      {/* Buscador + Filtro de etiquetas */}
+      <div className="flex gap-4 mb-4">
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          className="border rounded px-3 py-2 w-1/2"
+        />
+        <select
+          value={filterTag}
+          onChange={(e) => {
+            setFilterTag(e.target.value);
+            setPage(1);
+          }}
+          className="border rounded px-3 py-2"
+        >
+          <option value="">Todas las etiquetas</option>
+          {allTags.map((tag) => (
+            <option key={tag.id} value={tag.nombre}>
+              {tag.nombre}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Tabla */}
       <table className="w-full border border-gray-200 mb-4">
@@ -78,6 +119,7 @@ export default function ContactList({ onSelect }: Props) {
           <tr>
             <th className="p-2 text-left">Nombre</th>
             <th className="p-2 text-left">Email</th>
+            <th className="p-2 text-left">Etiquetas</th>
             <th className="p-2 text-left">Acciones</th>
           </tr>
         </thead>
@@ -88,6 +130,23 @@ export default function ContactList({ onSelect }: Props) {
                 {c.nombres} {c.apellidos}
               </td>
               <td className="p-2">{c.email}</td>
+              <td className="p-2">
+                <div className="flex flex-wrap gap-1">
+                  {c.etiquetas && c.etiquetas.length > 0 ? (
+                    c.etiquetas.map((tag) => (
+                      <span
+                        key={tag.id}
+                        className="px-2 py-1 text-xs rounded text-white"
+                        style={{ backgroundColor: tag.color }}
+                      >
+                        {tag.nombre}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-gray-400">—</span>
+                  )}
+                </div>
+              </td>
               <td className="p-2">
                 <button
                   className="text-blue-600 underline"
@@ -126,7 +185,10 @@ export default function ContactList({ onSelect }: Props) {
       {showForm && (
         <ContactForm
           onClose={() => setShowForm(false)}
-          onSaved={loadContacts}
+          onSaved={() => {
+            setPage(1); // siempre regresa a la primera página
+            loadContacts();
+          }}
         />
       )}
     </div>
