@@ -1,85 +1,71 @@
-import { useState } from "react";
-import TabActividades from "./components/tabs/TabActividades";
-import TabPerfiles from "./components/tabs/TabPerfiles";
-import TabPreferencias from "./components/tabs/TabPreferencias";
+import { useState, useEffect } from "react";
+import { api } from "./api/api";
+import type { Contact } from "./api/api";
+import ContactList from "./components/ContactList";
+import ContactForm from "./components/ContactForm";
+import ContactDetail from "./components/ContactDetail";
 
-type Contact = {
-  id: number;
-  nombres: string;
-  apellidos: string;
-  email?: string;
-};
+type View = "list" | "form" | "detail";
 
 export default function App() {
-  const [selectedTab, setSelectedTab] = useState("actividades");
-  const [selectedContact] = useState<Contact>({
-    id: 1,
-    nombres: "Ana",
-    apellidos: "Pérez",
-    email: "ana@ejemplo.com",
-  });
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [view, setView] = useState<View>("list");
+  const [selected, setSelected] = useState<Contact | null>(null);
+
+  // 🔄 Cargar contactos al iniciar
+  useEffect(() => {
+    loadContacts();
+  }, []);
+
+  const loadContacts = async () => {
+    try {
+      const data = await api.getContacts();
+      setContacts(data);
+    } catch (err) {
+      console.error("Error cargando contactos", err);
+    }
+  };
+
+  const handleSaved = (contact: Contact) => {
+    setContacts([...contacts, contact]); // actualiza lista local
+    setView("list");
+  };
+
+  const handleSelect = (contact: Contact) => {
+    setSelected(contact);
+    setView("detail");
+  };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Detalle de Contacto</h1>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <h1 className="text-2xl font-bold mb-4">Gestión de Contactos</h1>
 
-      {/* Info del contacto */}
-      <div className="mb-6 p-4 bg-gray-100 rounded-lg">
-        <p className="font-semibold">
-          {selectedContact.nombres} {selectedContact.apellidos}
-        </p>
-        <p className="text-gray-600">{selectedContact.email}</p>
-      </div>
+      {view === "list" && (
+        <>
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded mb-4"
+            onClick={() => setView("form")}
+          >
+            + Nuevo Contacto
+          </button>
 
-      {/* Tabs */}
-      <div className="flex space-x-4 border-b mb-6">
-        <button
-          className={`pb-2 ${
-            selectedTab === "actividades"
-              ? "border-b-2 border-blue-500 font-semibold"
-              : "text-gray-500"
-          }`}
-          onClick={() => setSelectedTab("actividades")}
-        >
-          Actividades
-        </button>
-        <button
-          className={`pb-2 ${
-            selectedTab === "perfiles"
-              ? "border-b-2 border-blue-500 font-semibold"
-              : "text-gray-500"
-          }`}
-          onClick={() => setSelectedTab("perfiles")}
-        >
-          Perfiles Sociales
-        </button>
-        <button
-          className={`pb-2 ${
-            selectedTab === "preferencias"
-              ? "border-b-2 border-blue-500 font-semibold"
-              : "text-gray-500"
-          }`}
-          onClick={() => setSelectedTab("preferencias")}
-        >
-          Preferencias
-        </button>
-      </div>
+          <ContactList contacts={contacts} onSelect={handleSelect} />
+        </>
+      )}
 
-      {/* Contenido dinámico */}
-      <div>
-        {selectedTab === "actividades" && (
-          <TabActividades
-            contactId={selectedContact.id}
-            setLogs={() => {}}
-          />
-        )}
-        {selectedTab === "perfiles" && (
-          <TabPerfiles contactId={selectedContact.id} />
-        )}
-        {selectedTab === "preferencias" && (
-          <TabPreferencias contactId={selectedContact.id} />
-        )}
-      </div>
+      {view === "form" && (
+        <ContactForm
+          onSaved={handleSaved}
+          onCancel={() => setView("list")}
+        />
+      )}
+
+      {view === "detail" && selected && (
+        <ContactDetail
+          contact={selected}
+          onBack={() => setView("list")}
+        />
+      )}
     </div>
   );
 }
